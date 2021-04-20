@@ -1,0 +1,80 @@
+<!--miniprogram/pages/home_center/common_panel/index.js.wxml-->
+<wxs src="./index.wxs" module="utils" />
+
+<image class="common-panel-backgroud" src="{{forest}}" />
+<navbar device_name="{{device_name}}" bind:jumpTodeviceEditPage="jumpTodeviceEditPage" />
+<view class='header'>
+      <image src='/image/1.png'></image>
+    </view>
+<!-- 处理数据显示  -->
+<view class="common-panel-header">
+  <view class="common-panel-header-block">
+    <view class="common-panel-header-dpName" style="width: 329rpx; height: auto; display: block; box-sizing: border-box">插座1</view>
+  </view>
+  <block wx:if="{{titleItem.value ==true}}">
+ <view class="common-panel-header-dpValue" style=" width: 329rpx; height: 106rpx; box-sizing: border-box">插座已开启</view> 
+</block>
+<block wx:else>
+ <view class="common-panel-header-dpValue" style=" width: 329rpx; height: 106rpx; box-sizing: border-box">插座已关闭</view>
+</block>
+<view class='footer'>
+      <view class='footerleft'>
+        <view class='yibaier'>
+          {{setuptemp}}
+          <text class='shedingwendu'>50KWh</text>
+        </view>
+        <view class='shedingwendu' bindtap='setuptemp'>
+        总电量
+        </view>
+      </view>
+      <view class='xian'></view>
+      <view class='footermiddle'>
+        <view class='yibaier'>
+          {{time}}
+          <text class='shedingwendu'>50w</text>
+        </view>
+        <view class='shedingwendu'>
+          当前功耗
+        </view>
+      </view>
+      <view class='xian'></view>
+      <view class='footerright'>
+        <view class='yibaier'>
+          {{setuptime}}
+          <text class='shedingwendu'>100mA</text>
+        </view>
+        <view class='shedingwendu' bindtap='setuptime'>
+          当前电流
+        </view>
+      </view>
+    </view>
+</view>
+
+<block wx:if="{{isRoDpListShow}}">
+  <view class="statuslist">
+    <block wx:for="{{roDpList}}" wx:key="{{item.code}}" wx:for-item="item" wx:for-index='idx'>
+      <view class="{{utils.countDpItem(roDpListLength,idx)}}">
+        <view class="roDpItem-dpName">{{item.code}}</view>
+        <view class="roDpItem-status">{{item.value}}</view>
+      </view>
+    </block>
+  </view>
+</block>
+
+<view class="scroll-view">
+  <block wx:if="{{isRwDpListShow}}">
+    <block wx:for="{{rwDpList}}" wx:key="{{item.code}}" wx:for-item="item">
+      <block wx:if="{{item.type === 'Boolean'}}">
+        <Boolean model:isChecked="{{item.value}}" dpCode="{{item.code}}" dpName="{{item.name}}" bind:sendDp="sendDp" />
+      </block>
+      <block wx:if="{{item.type === 'Integer'}}">
+        <Integer model:value="{{item.value}}" values="{{item.values}}" dpCode="{{item.code}}" dpName="{{item.name}}"
+          bind:sendDp="sendDp" />
+      </block>
+      <block wx:if="{{item.type === 'Enum'}}">
+        <Enum model:value="{{item.value}}" values="{{item.values}}" dpCode="{{item.code}}" dpName="{{item.name}}"
+          bind:sendDp="sendDp" />
+      </block>
+    </block>
+  </block>
+</view>
